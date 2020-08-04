@@ -3,13 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"net"
 	"os"
 	"strconv"
 
-	"github.com/gwuhaolin/lightsocks"
-	"github.com/gwuhaolin/lightsocks/cmd"
-	"github.com/gwuhaolin/lightsocks/server"
+	"github.com/nxsre/lightsocks"
+	"github.com/nxsre/lightsocks/cmd"
+	"github.com/nxsre/lightsocks/server"
 	"github.com/phayes/freeport"
 )
 
@@ -38,11 +37,11 @@ func main() {
 	config.SaveConfig()
 
 	// 启动 server 端并监听
-	lsServer, err := server.NewLsServer(config.Password, config.ListenAddr)
+	lsServer, err := server.NewLsServer(config.Password, ":3333")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Fatalln(lsServer.Listen(func(listenAddr *net.TCPAddr) {
+	log.Fatalln(lsServer.Listen(func(listenAddr string) {
 		log.Println(fmt.Sprintf(`
 lightsocks-server:%s 启动成功，配置如下：
 服务监听地址：

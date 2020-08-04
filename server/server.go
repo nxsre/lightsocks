@@ -4,12 +4,12 @@ import (
 	"encoding/binary"
 	"net"
 
-	"github.com/gwuhaolin/lightsocks"
+	"github.com/nxsre/lightsocks"
 )
 
 type LsServer struct {
 	Cipher     *lightsocks.Cipher
-	ListenAddr *net.TCPAddr
+	ListenAddr string
 }
 
 // 新建一个服务端
@@ -22,20 +22,16 @@ func NewLsServer(password string, listenAddr string) (*LsServer, error) {
 	if err != nil {
 		return nil, err
 	}
-	structListenAddr, err := net.ResolveTCPAddr("tcp", listenAddr)
-	if err != nil {
-		return nil, err
-	}
 	return &LsServer{
 		Cipher:     lightsocks.NewCipher(bsPassword),
-		ListenAddr: structListenAddr,
+		ListenAddr: listenAddr,
 	}, nil
 
 }
 
 // 运行服务端并且监听来自本地代理客户端的请求
-func (lsServer *LsServer) Listen(didListen func(listenAddr *net.TCPAddr)) error {
-	return lightsocks.ListenEncryptedTCP(lsServer.ListenAddr, lsServer.Cipher, lsServer.handleConn, didListen)
+func (lsServer *LsServer) Listen(didListen func(listenAddr string)) error {
+	return lightsocks.ListenEncryptedQuic(lsServer.ListenAddr, lsServer.Cipher, lsServer.handleConn, didListen)
 }
 
 // 解 SOCKS5 协议

@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/nxsre/lightsocks/cmd"
+	"github.com/nxsre/lightsocks/local"
 	"log"
-	"net"
-
-	"github.com/gwuhaolin/lightsocks/cmd"
-	"github.com/gwuhaolin/lightsocks/local"
 )
 
 const (
@@ -30,7 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Fatalln(lsLocal.Listen(func(listenAddr *net.TCPAddr) {
+	log.Fatalln(lsLocal.Listen(func(listenAddr string) {
 		log.Println(fmt.Sprintf(`
 lightsocks-local:%s 启动成功，配置如下：
 本地监听地址：
